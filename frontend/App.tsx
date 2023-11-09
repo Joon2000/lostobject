@@ -1,5 +1,9 @@
 import React from "react"
 import logo from "./assets/dfinity.svg"
+import {
+  createActor,
+  counter,
+} from "../src/declarations/counter";
 /*
  * Connect2ic provides essential utilities for IC app development
  */
@@ -10,7 +14,7 @@ import "@connect2ic/core/style.css"
 /*
  * Import canister definitions like this:
  */
-import * as counter from "../.dfx/local/canisters/counter"
+import * as counter_all from "../.dfx/local/canisters/counter"
 /*
  * Some examples to get you started
  */
@@ -19,8 +23,11 @@ import { Transfer } from "./components/Transfer"
 import { Profile } from "./components/Profile"
 import Button from '@mui/material/Button';
 import { AuthClient } from "@dfinity/auth-client";
+import { HttpAgent } from "@dfinity/agent";
 
 function App() {
+  let actor = counter;
+
   return (
     <div className="App">
       <div className="auth-section">
@@ -31,24 +38,24 @@ function App() {
       <Button 
       variant="contained"
       onClick={async (e) => {
-        // e.preventDefault();
-        // let authClient = await AuthClient.create();
+        e.preventDefault();
+        let authClient = await AuthClient.create();
         // start the login process and wait for it to finish
-        // await new Promise((resolve) => {
-        //     authClient.login({
-        //         identityProvider:
-        //             process.env.DFX_NETWORK === "ic"
-        //                 ? "https://identity.ic0.app"
-        //                 : `http://localhost:4943/?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai`,
-        //         onSuccess: resolve,
-        //     });
-        // });
+        await new Promise((resolve : any) => {
+            authClient.login({
+                identityProvider:
+                    process.env.REACT_APP_DFX_NETWORK === "ic"
+                        ? "https://identity.ic0.app"
+                        : `http://localhost:4943/?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai`,
+                onSuccess: resolve,
+            });
+        });
       
-        // const identity = authClient.getIdentity();
-        // const agent = new HttpAgent({ identity });
-        // actor = createActor(process.env.CANISTER_ID_II_INTEGRATION_BACKEND, {
-        //     agent,
-        // });
+        const identity = authClient.getIdentity();
+        const agent = new HttpAgent({ identity });
+        actor = createActor(process.env.REACT_APP_CANISTER_ID_II_INTEGRATION_BACKEND, {
+            agent,
+        });
         
         return false;
       }}
@@ -76,7 +83,7 @@ function App() {
 
 const client = createClient({
   canisters: {
-    counter,
+    counter_all,
   },
   providers: defaultProviders,
   globalProviderConfig: {
