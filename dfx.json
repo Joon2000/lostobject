@@ -4,6 +4,10 @@
       "main": "canisters/counter/main.mo",
       "type": "motoko"
     },
+    "storage": {
+      "main": "canisters/storage/main.mo",
+      "type": "motoko"
+    },
     "internet_identity" : {
       "type": "pull",
       "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
