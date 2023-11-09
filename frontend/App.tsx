@@ -18,6 +18,7 @@ import { Counter } from "./components/Counter"
 import { Transfer } from "./components/Transfer"
 import { Profile } from "./components/Profile"
 import Button from '@mui/material/Button';
+import { AuthClient } from "@dfinity/auth-client";
 
 function App() {
   return (
@@ -27,7 +28,31 @@ function App() {
       </div>
       <ConnectDialog />
 
-      <Button variant="contained">who am i</Button>;
+      <Button 
+      variant="contained"
+      onClick={async (e) => {
+        // e.preventDefault();
+        // let authClient = await AuthClient.create();
+        // start the login process and wait for it to finish
+        // await new Promise((resolve) => {
+        //     authClient.login({
+        //         identityProvider:
+        //             process.env.DFX_NETWORK === "ic"
+        //                 ? "https://identity.ic0.app"
+        //                 : `http://localhost:4943/?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai`,
+        //         onSuccess: resolve,
+        //     });
+        // });
+      
+        // const identity = authClient.getIdentity();
+        // const agent = new HttpAgent({ identity });
+        // actor = createActor(process.env.CANISTER_ID_II_INTEGRATION_BACKEND, {
+        //     agent,
+        // });
+        
+        return false;
+      }}
+      >login</Button>;
 
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
