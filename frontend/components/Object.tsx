@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 
+
 const Object = ({id:id}) => {
   // 폼 데이터를 관리할 상태
   const [input, setInput] = useState("");
