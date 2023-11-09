@@ -8,4 +8,8 @@ actor {
     public query func getValue(): async Nat {
         currentValue;
     };
+
+     public shared (msg) func whoami() : async Principal {
+        msg.caller
+    };
 };
