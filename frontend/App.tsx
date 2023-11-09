@@ -21,12 +21,14 @@ import * as counter_all from "../.dfx/local/canisters/counter"
 import { Counter } from "./components/Counter"
 import { Transfer } from "./components/Transfer"
 import { Profile } from "./components/Profile"
+import Object from "./components/Object"
 import Button from '@mui/material/Button';
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent } from "@dfinity/agent";
 
 function App() {
   let actor = counter;
+  const [id, setId] = ("");
 
   return (
     <div className="App">
@@ -73,9 +75,10 @@ function App() {
         Examples
       </p>
       <div className="examples">
-        <Counter />
+        {/* <Counter />
         <Profile />
-        <Transfer />
+        <Transfer /> */}
+        <Object id={"1111111"}/>
       </div>
     </div>
   )
