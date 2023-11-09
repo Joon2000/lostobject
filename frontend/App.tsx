@@ -17,6 +17,7 @@ import * as counter from "../.dfx/local/canisters/counter"
 import { Counter } from "./components/Counter"
 import { Transfer } from "./components/Transfer"
 import { Profile } from "./components/Profile"
+import Button from '@mui/material/Button';
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <ConnectButton />
       </div>
       <ConnectDialog />
+
+      <Button variant="contained">who am i</Button>;
 
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
