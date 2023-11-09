@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import logo from "./assets/dfinity.svg"
 import {
   createActor,
@@ -24,62 +24,73 @@ import { Profile } from "./components/Profile"
 import Object from "./components/Object"
 import Button from '@mui/material/Button';
 import { AuthClient } from "@dfinity/auth-client";
-import { HttpAgent } from "@dfinity/agent";
+import { HttpAgent, Identity } from "@dfinity/agent";
+import { Box } from '@mui/material';
 
 function App() {
   let actor = counter;
   const [id, setId] = ("");
+  const [myId, setMyId] = useState("123");
+  const [identity, setIdentity] = useState<Identity>();
 
   return (
-    <div className="App">
-      <div className="auth-section">
+    <div>
+      {/* <div>
         <ConnectButton />
-      </div>
-      <ConnectDialog />
-
-      <Button 
-      variant="contained"
-      onClick={async (e) => {
-        e.preventDefault();
-        let authClient = await AuthClient.create();
-        // start the login process and wait for it to finish
-        await new Promise((resolve : any) => {
-            authClient.login({
-                identityProvider:
-                    process.env.REACT_APP_DFX_NETWORK === "ic"
-                        ? "https://identity.ic0.app"
-                        : `http://localhost:4943/?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai`,
-                onSuccess: resolve,
-            });
-        });
-      
-        const identity = authClient.getIdentity();
-        const agent = new HttpAgent({ identity });
-        actor = createActor(process.env.REACT_APP_CANISTER_ID_II_INTEGRATION_BACKEND, {
-            agent,
-        });
+      </div> */}
+      <Box sx={{my: 10}}>
+        <Button 
+        variant="contained"
+        onClick={async (e) => {
+          e.preventDefault();
+          let authClient = await AuthClient.create();
+          // start the login process and wait for it to finish
+          await new Promise((resolve : any) => {
+              authClient.login({
+                  identityProvider:
+                      process.env.DFX_NETWORK === "ic"
+                          ? "https://identity.ic0.app"
+                          : `http://localhost:4943/?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai`,
+                  onSuccess: resolve,
+              });
+          });
         
-        return false;
-      }}
-      >login</Button>;
+          // const identity = authClient.getIdentity();
+          let id = authClient.getIdentity();
+          setIdentity(id);
+          const agent = new HttpAgent({ identity });
+          actor = createActor(process.env.CANISTER_ID_COUNTER, {
+              agent,
+          });
+          
+          return false;
+        }}
+        >login</Button>
 
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="slogan">
-          React+TypeScript Template
-        </p>
-        <p className="twitter">by <a href="https://twitter.com/miamaruq">@miamaruq</a></p>
-      </header>
+        <Button
+          variant="contained"
+          onClick={async (e) => {
+            e.preventDefault();
+            console.log("who am i button clicked!")
+            // whoAmIButton.setAttribute("disabled", true);
+            const principal = await actor.whoami();
+            console.log("principal", principal)
+            // whoAmIButton.removeAttribute("disabled");
+            // document.getElementById("principal").innerText = principal.toString();
+            let principal_str = principal.toString();
+            setMyId(principal_str);
+            return false;
+          }}>
+            who am i : {myId}
+        </Button>
+      </Box>
 
-      <p className="examples-title">
-        Examples
-      </p>
-      <div className="examples">
+      <Box>
         {/* <Counter />
         <Profile />
         <Transfer /> */}
         <Object id={"1111111"}/>
-      </div>
+      </Box>
     </div>
   )
 }
