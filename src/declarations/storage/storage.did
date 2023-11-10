@@ -1,5 +1,8 @@
 service : {
-  register: (text, text, text, text, text, text) -> ();
+  changeStateFound: (text) -> (bool);
+  changeStateLost: (text, text) -> (bool);
+  changeStateReceived: (text, text) -> (bool);
+  register: (text, text, text, text, text) -> ();
   searchObjectId: (text) -> (vec text);
   searchUserId: (text) -> (vec text);
 }

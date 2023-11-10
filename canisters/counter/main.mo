@@ -9,7 +9,7 @@ actor {
         currentValue;
     };
 
-     public shared (msg) func whoami() : async Principal {
+    public shared (msg) func whoami() : async Principal {
         msg.caller
     };
 };

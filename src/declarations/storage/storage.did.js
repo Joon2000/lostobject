@@ -1,7 +1,10 @@
 export const idlFactory = ({ IDL }) => {
   return IDL.Service({
+    'changeStateFound' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'changeStateLost' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
+    'changeStateReceived' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
     'register' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
         [],
         [],
       ),
