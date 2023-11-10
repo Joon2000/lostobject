@@ -1,8 +1,8 @@
 service : {
-<<<<<<< HEAD
   inc: () -> (nat);
-=======
   get: (text) -> (text);
->>>>>>> 991b28f (Add storage motoko)
   store: (text, text) -> ();
+  register: (text, text, text, text, text, text) -> ();
+  searchObjectId: (text) -> (vec text);
+  searchUserId: (text) -> (vec text);
 }

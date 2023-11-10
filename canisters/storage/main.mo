@@ -33,10 +33,10 @@ actor {
   public func searchObjectId(objectId: Text): async [Text] {
     for (e in storage.vals()){
       if (e.objectId == objectId){
-        return [e.userId, e.typeName, e.name, e.color, e.state]
+        return [e.objectId, e.userId, e.typeName, e.name, e.color, e.state]
 
       };
     };
-    return ["","","","","",""];
+    return ["","","","","","",""];
   }
 };
