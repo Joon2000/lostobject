@@ -50,9 +50,14 @@ function App() {
   const [resultObjectList, setResultObjectList] = useState([]);
 
 
-  // const generateNewObjectId = () => {
-
-  // }
+  const [isLost, setIsLost] = useState(true)
+  const [isFound, setIsFound] = useState(true)
+  const [isReceived, setIsReceived] = useState(true)
+  const [lostObjectId, setLostObjectId] = useState("")
+  const [lostUserId, setLostUserId] = useState("")
+  const [foundObjectId, setFoundObjectId] = useState("")
+  const [receivedObjectId, setReceivedObjectId] = useState("")
+  const [receivedUserId, setReceivedUserId] = useState("")
 
 
 
@@ -86,7 +91,7 @@ function App() {
     e.preventDefault();
 
     // await storage.store(id, input)
-    await storage.register(objectId, userId, typeName, name, color, state);
+    await storage.register(objectId, userId, typeName, name, color);
     console.log("registered!!")
     let result = await storage.searchObjectId(objectId);
     console.log("result:", result);
@@ -121,6 +126,20 @@ function App() {
     setSearchUserId("");
   }
 
+  const changeToLost = async (e) =>{
+    e.proventDefault
+    setIsLost(await storage.changeStateLost(lostObjectId, lostUserId))
+  } 
+
+  const changeToFound = async (e) =>{
+    e.proventDefault
+    setIsFound(await storage.changeStateFound(lostObjectId))
+  } 
+
+  const changeToReceive = async (e) =>{
+    e.proventDefault
+    setIsReceived(await storage.changeStateReceived(lostObjectId, lostUserId))
+  } 
   
 
 
@@ -253,12 +272,54 @@ function App() {
 
 
 
-      {/* <Box>
-        <Counter />
-        <Profile />
-        <Transfer />
-        <Object id={"1111111"}/>
-      </Box> */}
+      <Box>
+        <Box>
+          <Typography>Lost Object</Typography>
+            <Typography>Object Id: </Typography>
+            <textarea
+                value={lostObjectId}
+                onChange={(e)=>setLostObjectId(e.target.value)}
+              />
+            <Typography>User Id: </Typography>
+            <textarea
+                value={lostUserId}
+                onChange={(e)=>setLostUserId(e.target.value)}
+              />
+          <Button
+            onClick={changeToLost}
+            >LOST</Button>
+          {isLost&&"Object Id and User Id not match or No matching Object Id found"}
+        </Box>
+        <Box>
+          <Typography>Found Object</Typography>
+            <Typography>Object Id</Typography>
+            <textarea
+                value={foundObjectId}
+                onChange={(e)=>setFoundObjectId(e.target.value)}
+              />
+          <Button
+            onClick={changeToFound}
+            >FOUND</Button>
+          {isFound&&"No mathching Object Id found"}
+        </Box>
+        <Box>
+          <Typography>Received Object</Typography>
+            <Typography>Object Id</Typography>
+            <textarea
+                value={receivedObjectId}
+                onChange={(e)=>setReceivedObjectId(e.target.value)}
+              />
+            <Typography>User Id</Typography>
+            <textarea
+                value={receivedUserId}
+                onChange={(e)=>setReceivedUserId(e.target.value)}
+              />
+          <Button
+            onClick={changeToReceive}
+            >RECEIVED</Button>
+          {isReceived&&"Object Id and User Id not match or No matching Object Id found"}
+        </Box>
+      </Box>
     </div>
   )
 }

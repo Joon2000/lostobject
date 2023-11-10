@@ -40,29 +40,41 @@ actor {
     return ["","","","","","",""];
   };
 
-  public func changeStateLost(objectId: Text): async () {
+  public func changeStateLost(objectId: Text, userId: Text): async Bool {
     for (e in storage.vals()){
       if(e.objectId == objectId){
+        if(e.userId != userId){
+          return false;
+        };
         e.state := "lost";
+        return true
       };
     };
+    return false;
   };
 
   
-  public func changeStateFound(objectId: Text): async () {
+  public func changeStateFound(objectId: Text): async Bool {
     for (e in storage.vals()){
       if(e.objectId == objectId){
         e.state := "found";
+        return true;
       };
     };
+    return false
   };
 
-  public func changeStateReceived(objectId: Text): async () {
+  public func changeStateReceived(objectId: Text, userId: Text): async Bool {
     for (e in storage.vals()){
+      if(e.userId != userId){
+          return false;
+        };
       if(e.objectId == objectId){
         e.state := "owned";
+        return true;
       };
     };
+    return false;
   };
 
 
