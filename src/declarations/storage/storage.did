@@ -1,4 +1,4 @@
 service : {
-  inc: () -> (nat);
+  get: (text) -> (text);
   store: (text, text) -> ();
 }
