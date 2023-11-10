@@ -14,8 +14,8 @@ actor {
 
   let storage = Buffer.Buffer<Object>(0);
 
-  public func register(objectId: Text, userId: Text, typeName: Text, name: Text, color: Text, state: Text): async () {
-    let data = Object(objectId, userId, typeName, name, color, state);
+  public func register(objectId: Text, userId: Text, typeName: Text, name: Text, color: Text): async () {
+    let data = Object(objectId, userId, typeName, name, color, "owned");
     storage.add(data);
   };
 

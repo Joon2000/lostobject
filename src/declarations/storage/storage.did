@@ -1,5 +1,5 @@
 service : {
-  register: (text, text, text, text, text, text) -> ();
+  register: (text, text, text, text, text) -> ();
   searchObjectId: (text) -> (vec text);
   searchUserId: (text) -> (vec text);
 }
