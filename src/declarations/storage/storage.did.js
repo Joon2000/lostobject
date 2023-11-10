@@ -3,8 +3,11 @@ export const idlFactory = ({ IDL }) => {
     'inc' : IDL.Func([], [IDL.Nat], []),
     'get' : IDL.Func([IDL.Text], [IDL.Text], []),
     'store' : IDL.Func([IDL.Text, IDL.Text], [], []),
+    'changeStateFound' : IDL.Func([IDL.Text], [IDL.Bool], []),
+    'changeStateLost' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
+    'changeStateReceived' : IDL.Func([IDL.Text, IDL.Text], [IDL.Bool], []),
     'register' : IDL.Func(
-        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
+        [IDL.Text, IDL.Text, IDL.Text, IDL.Text, IDL.Text],
         [],
         [],
       ),
