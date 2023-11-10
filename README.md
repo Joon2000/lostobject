@@ -1,5 +1,5 @@
 # lostobject
-Project for Labs and ICP hackerthon
+Project for LBank and ICP hackerthon
 
 
 https://internetcomputer.org/docs/current/home
