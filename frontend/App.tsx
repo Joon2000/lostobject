@@ -34,7 +34,7 @@ function App() {
   const [myId, setMyId] = useState("user identity");
   const [identity, setIdentity] = useState<Identity>();
 
-  const [newObjectId, setNewObjectId] = useState(24163);
+  const [newObjectId, setNewObjectId] = useState(343);
   const [isNewObjectIdSeen, setIsNewObjectIdSeen] = useState(false);
 
   const [objectId, setObjectId] = useState("");
@@ -44,10 +44,15 @@ function App() {
   const [typeName, setTypeName] = useState("");
   const [name, setName] = useState("");
   const [color, setColor] = useState("");
-  const [state, setState] = useState("");
+  // const [state, setState] = useState("");
 
+  const [resultRegisteredObjectInfo, setResultResgisteredObjectInfo] = useState([]);
   const [resultObjectInfo, setResultObjectInfo] = useState([]);
   const [resultObjectList, setResultObjectList] = useState([]);
+
+  const [isResultInfoSeen, setIsResultInfoSeen] = useState(false);
+  const [isSearchWithObjectResultInfoSeen, setIsSearchWithObjectResultInfoSeen] = useState(false);
+  const [isSearchWithUserResultInfoSeen, setIsSearchWithUserResultInfoSeen] = useState(false);
 
 
   const [isLost, setIsLost] = useState(true)
@@ -83,17 +88,21 @@ function App() {
   const colorHandleChange = (e) => {
     setColor(e.target.value)
   };
-  const stateHandleChange = (e) => {
-    setState(e.target.value)
-  };
+  // const stateHandleChange = (e) => {
+  //   setState(e.target.value)
+  // };
   
   const handleRegisterObject = async (e) => {
+    setIsResultInfoSeen(false);
+    setIsSearchWithObjectResultInfoSeen(false);
+    setIsSearchWithUserResultInfoSeen(false);
     e.preventDefault();
 
     // await storage.store(id, input)
     await storage.register(objectId, userId, typeName, name, color);
     console.log("registered!!")
     let result = await storage.searchObjectId(objectId);
+    setResultResgisteredObjectInfo(result);
     console.log("result:", result);
 
     setObjectId("");
@@ -101,29 +110,38 @@ function App() {
     setTypeName("");
     setName("");
     setColor("");
-    setState("");
+    // setState("");
 
 
     setIsNewObjectIdSeen(false);
     setNewObjectId((prev)=>prev+123);
+    setIsResultInfoSeen(true);
   };
 
   const searchWithObjectId = async (e) => {
+    setIsResultInfoSeen(false);
+    setIsSearchWithObjectResultInfoSeen(false);
+    setIsSearchWithUserResultInfoSeen(false);
     e.preventDefault();
 
     let object = await storage.searchObjectId(searchObjectId);
     setResultObjectInfo(object);
     console.log("object result :", object);
     setSearchObjectId("");
+    setIsSearchWithObjectResultInfoSeen(true);
   }
 
   const searchWithUserId = async (e) => {
+    setIsResultInfoSeen(false);
+    setIsSearchWithObjectResultInfoSeen(false);
+    setIsSearchWithUserResultInfoSeen(false);
     e.preventDefault();
 
     let objectIds = await storage.searchUserId(searchUserId);
     setResultObjectList(objectIds);
     console.log("result Object list :", objectIds);
     setSearchUserId("");
+    setIsSearchWithUserResultInfoSeen(true);
   }
 
   const changeToLost = async (e) =>{
@@ -148,7 +166,7 @@ function App() {
       {/* <div>
         <ConnectButton />
       </div> */}
-      <Box sx={{my: 10}}>
+      <Box sx={{mt: 2, mb:5, p:2, width: 500}} justifyContent={"space-around"} display={"flex"}>
         <Button 
         variant="contained"
         onClick={async (e) => {
@@ -189,85 +207,129 @@ function App() {
             // document.getElementById("principal").innerText = principal.toString();
             let principal_str = principal.toString();
             setMyId(principal_str);
+            setUserId(principal_str);
             return false;
           }}>
             identity generate : 
         </Button>
-        <Typography>{myId}</Typography>
+        <Typography variant="h5">{myId}</Typography>
+      </Box >
+          <Box display={"flex"} justifyContent={"left"} sx={{width: 500}}>
+              <Button
+            onClick={()=>{
+              setIsNewObjectIdSeen(true);
+              setObjectId(newObjectId+"");
+            }}
+            variant="outlined"
+            sx={{ml:2, mr: 3}}
+            > 
+            Generate Object Id
+            </Button>
+            <Typography variant="h5">{ isNewObjectIdSeen && newObjectId }</Typography>
+          </Box>
+       
+
+        <Box sx={{my:1, ml:2}}>
+          <Typography variant="h3">Register your object</Typography>
+          <Box display={"flex"} justifyContent={"left"}>
+            <Box sx={{mr: 5}}>  
+              <Typography>objectId</Typography>
+              <textarea
+                  value={objectId}
+                  onChange={objectIdHandleChange}
+                />
+              <Typography>userId</Typography>
+              <textarea
+                  value={userId}
+                  onChange={userIdHandleChange}
+                />
+              <Typography>typeName</Typography>
+              <textarea
+                  value={typeName}
+                  onChange={typeNameHandleChange}
+                />
+              <Typography>name</Typography>
+              <textarea
+                  value={name}
+                  onChange={nameHandleChange}
+                />
+              <Typography>color</Typography>
+              <textarea
+                  value={color}
+                  onChange={colorHandleChange}
+                />
+              <Button
+              onClick={handleRegisterObject}
+              >REGISTER OBJECT</Button>
+            </Box>
+            {isResultInfoSeen && 
+            <Box>
+              <Typography variant="h6">REGISTERD OBJECT BELOW</Typography>
+              <Typography>Object Id {resultRegisteredObjectInfo[0]}</Typography>
+              <Typography>User Id {resultRegisteredObjectInfo[1]}</Typography>
+              <Typography>Type Name {resultRegisteredObjectInfo[2]}</Typography>
+              <Typography>Name {resultRegisteredObjectInfo[3]}</Typography>
+              <Typography>Color {resultRegisteredObjectInfo[4]}</Typography>
+              <Typography>State {resultRegisteredObjectInfo[5]}</Typography>
+            </Box>}
+            
+          </Box>
       </Box>
-        <Button
-        onClick={()=>{
-          setIsNewObjectIdSeen(true);
-        }}
-        > 
-        Generate Object Id
-        </Button>
-        <Typography>{ isNewObjectIdSeen && newObjectId }</Typography>
 
-        <Box>
-        <Typography>Register your object</Typography>
-        <Typography>objectId</Typography>
-        <textarea
-            value={objectId}
-            onChange={objectIdHandleChange}
-          />
-        <Typography>userId</Typography>
-        <textarea
-            value={userId}
-            onChange={userIdHandleChange}
-          />
-        <Typography>typeName</Typography>
-        <textarea
-            value={typeName}
-            onChange={typeNameHandleChange}
-          />
-        <Typography>name</Typography>
-        <textarea
-            value={name}
-            onChange={nameHandleChange}
-          />
-        <Typography>color</Typography>
-        <textarea
-            value={color}
-            onChange={colorHandleChange}
-          />
-        <Typography>state</Typography>
-        <textarea
-            value={state}
-            onChange={stateHandleChange}
-          />
-        <Typography>{objectId}, {userId}, {name}, {state}</Typography>
-
-        <Button
-        onClick={handleRegisterObject}
-        >REGISTER OBJECT</Button>
-      </Box>
-
-      <Box>
-        <Typography>Search with object id</Typography>
-        <Typography>objectId</Typography>
-        <textarea
-            value={searchObjectId}
-            onChange={searchObjectIdHandleChange}
-          />
-          <Button
-        onClick={searchWithObjectId}
-        >SEARCH OBJECT</Button>
-        <Typography>result : {resultObjectInfo}</Typography>
-        
+      <Box sx={{my:1, ml:2}}>
+        <Typography variant="h3">Search with object id</Typography>
+        <Box display={"flex"} justifyContent={"left"}>
+          <Box  sx={{mr: 5}}> 
+            <Typography>objectId</Typography>
+            <textarea
+                value={searchObjectId}
+                onChange={searchObjectIdHandleChange}
+              />
+              <Button
+            onClick={searchWithObjectId}
+            >SEARCH OBJECT</Button>
+          </Box>
+          {isSearchWithObjectResultInfoSeen && 
+          <Box>
+            <Typography variant="h6">OBJECT INFO</Typography>
+            <Typography>Object Id {resultObjectInfo[0]}</Typography>
+            <Typography>User Id {resultObjectInfo[1]}</Typography>
+            <Typography>Type Name {resultObjectInfo[2]}</Typography>
+            <Typography>Name {resultObjectInfo[3]}</Typography>
+            <Typography>Color {resultObjectInfo[4]}</Typography>
+            <Typography>State {resultObjectInfo[5]}</Typography>
+          </Box>}
+        </Box>
       </Box>
       
-      <Box>
-        <Typography>Search with user id</Typography>
-        <Typography>userId</Typography>
-        <textarea
-            value={searchUserId}
-            onChange={searchUserIdHandleChange}
-          />
-          <Button
-        onClick={searchWithUserId}
-        >SEARCH OBJECTS USER OWN</Button>
-        <Typography>result : {resultObjectList}</Typography>
+      <Box sx={{my:1, ml:2}}>
+        <Typography variant="h3">Search with user id</Typography>
+        <Box display={"flex"} justifyContent={"left"}>
+          <Box sx={{mr: 5}}>
+            <Typography>userId</Typography>
+          <textarea
+              value={searchUserId}
+              onChange={searchUserIdHandleChange}
+            />
+            <Button
+          onClick={searchWithUserId}
+          >SEARCH OBJECTS USER OWN</Button>
+          </Box>
+          {isSearchWithUserResultInfoSeen && 
+          <Box>
+            <Typography variant="h6">OBJECT LIST</Typography>
+            {resultObjectList.map((obj)=>(
+              <Typography>{obj}</Typography>
+            ))}
+            {/* <Typography>OBJECT INFO</Typography>
+            <Typography>Object Id</Typography>
+            <Typography>User Id</Typography>
+            <Typography>Type Name</Typography>
+            <Typography>Name</Typography>
+            <Typography>Color</Typography>
+            <Typography>State</Typography> */}
+          </Box>}
+        </Box>
       </Box>
 
 
