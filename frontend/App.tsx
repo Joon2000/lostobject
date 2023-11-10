@@ -184,8 +184,8 @@ function App() {
           });
         
           // const identity = authClient.getIdentity();
-          let id = authClient.getIdentity();
-          setIdentity(id);
+          let identity = authClient.getIdentity();
+          setIdentity(identity);
           const agent = new HttpAgent({ identity });
           actor = createActor(process.env.CANISTER_ID_COUNTER, {
               agent,
@@ -202,10 +202,11 @@ function App() {
             console.log("who am i button clicked!")
             // whoAmIButton.setAttribute("disabled", true);
             const principal = await actor.whoami();
-            console.log("principal", principal)
+            console.log("principal", principal);
             // whoAmIButton.removeAttribute("disabled");
             // document.getElementById("principal").innerText = principal.toString();
             let principal_str = principal.toString();
+            console.log("principal str", principal_str)
             setMyId(principal_str);
             setUserId(principal_str);
             return false;
@@ -350,7 +351,7 @@ function App() {
           <Button
             onClick={changeToLost}
             >LOST</Button>
-          {isLost&&"Object Id and User Id not match or No matching Object Id found"}
+          {!isLost&&"Object Id and User Id not match or No matching Object Id found"}
         </Box>
         <Box>
           <Typography>Found Object</Typography>
@@ -362,7 +363,7 @@ function App() {
           <Button
             onClick={changeToFound}
             >FOUND</Button>
-          {isFound&&"No mathching Object Id found"}
+          {!isFound&&"No mathching Object Id found"}
         </Box>
         <Box>
           <Typography>Received Object</Typography>
@@ -379,7 +380,7 @@ function App() {
           <Button
             onClick={changeToReceive}
             >RECEIVED</Button>
-          {isReceived&&"Object Id and User Id not match or No matching Object Id found"}
+          {!isReceived&&"Object Id and User Id not match or No matching Object Id found"}
         </Box>
       </Box>
     </div>
