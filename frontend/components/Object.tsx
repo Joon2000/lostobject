@@ -15,7 +15,7 @@ const Object = ({id:id}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await storage.store(id, input)
+    // await storage.store(id, input)
   };
 
   return (
