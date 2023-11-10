@@ -1,4 +1,4 @@
-
+import { createActor, storage } from "../../src/declarations/storage";
 import React, { useState } from 'react';
 
 
@@ -11,12 +11,11 @@ const Object = ({id:id}) => {
     setInput(e.target.value)
   };
 
-  // 폼을 제출할 때 호출되는 핸들러
-  const handleSubmit = (e) => {
+  // 폼을 제출할 때 호출되는 핸들러df
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = { id:id, object: input}
-    console.log(data)
+    await storage.store(id, input)
   };
 
   return (
