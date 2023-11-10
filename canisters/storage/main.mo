@@ -8,14 +8,14 @@ actor {
     public let typeName = _typeName;
     public let name  = _name;
     public let color = _color;
-    public let state = _state;
+    public var state = _state;
 
   }; 
 
   let storage = Buffer.Buffer<Object>(0);
 
-  public func register(objectId: Text, userId: Text, typeName: Text, name: Text, color: Text, state: Text): async () {
-    let data = Object(objectId, userId, typeName, name, color, state);
+  public func register(objectId: Text, userId: Text, typeName: Text, name: Text, color: Text): async () {
+    let data = Object(objectId, userId, typeName, name, color, "owned");
     storage.add(data);
   };
 
@@ -23,7 +23,7 @@ actor {
     let objectList = Buffer.Buffer<Text>(0);
     for (e in storage.vals()){
       if (e.userId == userId){
-        objectList.add(e.objectId)
+        objectList.add(e.objectId);
       };
     };
     return Buffer.toArray(objectList);
@@ -33,10 +33,38 @@ actor {
   public func searchObjectId(objectId: Text): async [Text] {
     for (e in storage.vals()){
       if (e.objectId == objectId){
-        return [e.objectId, e.userId, e.typeName, e.name, e.color, e.state]
+        return [e.objectId, e.userId, e.typeName, e.name, e.color, e.state];
 
       };
     };
     return ["","","","","","",""];
-  }
+  };
+
+  public func changeStateLost(objectId: Text): async () {
+    for (e in storage.vals()){
+      if(e.objectId == objectId){
+        e.state := "lost";
+      };
+    };
+  };
+
+  
+  public func changeStateFound(objectId: Text): async () {
+    for (e in storage.vals()){
+      if(e.objectId == objectId){
+        e.state := "found";
+      };
+    };
+  };
+
+  public func changeStateReceived(objectId: Text): async () {
+    for (e in storage.vals()){
+      if(e.objectId == objectId){
+        e.state := "owned";
+      };
+    };
+  };
+
+
+
 };
